@@ -66,7 +66,15 @@ kubectl get pods -l app=mysql
 ```
 # Connect to MYSQL Database
 kubectl run -it --rm --image=mysql:5.6 --restart=Never mysql-client -- mysql -h mysql -pdbpassword11
-
+```
+What Does Above Command Do?
+It temporarily spins up a new pod in your Kubernetes cluster using the MySQL 5.6 image.
+Inside this pod, it runs the MySQL client tool.
+The MySQL client connects to a MySQL server with:
+Hostname: mysql (likely a service name in Kubernetes pointing to your database).
+Password: dbpassword11.
+Once you finish using the client and exit, the pod is automatically deleted (--rm flag).
+```
 [or]
 
 # Use mysql client latest tag
