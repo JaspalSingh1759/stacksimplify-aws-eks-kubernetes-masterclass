@@ -167,8 +167,26 @@ kubectl delete -f 01-kube-manifests-default-backend/
 - [Sample Ingress Rule](https://kubernetes.io/docs/concepts/services-networking/ingress/#the-ingress-resource)
 - **ImplementationSpecific (default):** With this path type, matching is up to the controller implementing the IngressClass. Implementations can treat this as a separate pathType or treat it identically to the Prefix or Exact path types.
 - **Exact:** Matches the URL path exactly and with case sensitivity.
-- **Prefix:** Matches based on a URL path prefix split by /. Matching is case sensitive and done on a path element by element basis.
-
+  **Exact Matching**
+ Definition: Matches requests where the URL path exactly matches the specified value.
+ Behavior:
+For example, if the path is /app, it will match only:
+/app
+It does not match /app/ or /app/details.
+ Use Case:
+Use Exact matching when you want to route traffic for a very specific path to a backend service.
+Example: If you have a service that handles only the root path (/) or a specific endpoint like /login, you can use an Exact rule.- **Prefix:** Matches based on a URL path prefix split by /. Matching is case sensitive and done on a path element by element basis.
+  **Prefix Matching**
+ Definition: Matches all requests where the URL path starts with the specified prefix.
+ Behavior:
+For example, if the path is /app, it will match:
+/app
+/app/
+/app/details
+It does not match /application.
+ Use Case:
+Use Prefix matching when you want to route traffic for a group of related paths to a single backend service.
+Example: If you have a service handling all requests under /api, you can use a Prefix rule with /api.
 - **File Location:** `02-kube-manifests-rules\02-ALB-Ingress-Basic.yml`
 ```yaml
 # Annotations Reference: https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/
