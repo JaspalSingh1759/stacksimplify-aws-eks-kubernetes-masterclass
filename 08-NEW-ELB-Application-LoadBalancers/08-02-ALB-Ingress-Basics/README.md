@@ -60,6 +60,19 @@ spec:
 ## Step-04: Review Ingress kube-manifest with Default Backend Option
 - [Annotations](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/)
 - **File Location:** `01-kube-manifests-default-backend/02-ALB-Ingress-Basic.yml`
+- When a user sends a request to this Ingress (e.g., via an ALB created by the AWS Load Balancer Controller):
+If there are no specific rules in the Ingress resource to match the request (like hostnames or paths), Kubernetes directs the traffic to the defaultBackend.
+The AWS Load Balancer Controller uses this configuration to create an ALB and configure it to route unmatched traffic to the specified backend service (app1-nginx-nodeport-service on port 80).
+Use Case for Default Backend
+A default backend is useful when you want to ensure that all unmatched requests are handled gracefully rather than returning an error.
+For example:
+You could route unmatched traffic to a generic "404 Not Found" page.
+Or route it to a maintenance page or a default application.
+ Example Scenario
+Suppose you have deployed multiple services behind an ALB, but you haven't defined specific routing rules for some requests. With this Ingress configuration:
+Requests matching /app1/index.html (as per health checks) will reach app1-nginx-nodeport-service.
+Any other requests not matching specific paths or hosts (if later rules are added) will still go to this default backend.
+This setup ensures that your application handles all traffic gracefully, even if no explicit routing rules are defined.
 ```yaml
 # Annotations Reference: https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/annotations/
 apiVersion: networking.k8s.io/v1
