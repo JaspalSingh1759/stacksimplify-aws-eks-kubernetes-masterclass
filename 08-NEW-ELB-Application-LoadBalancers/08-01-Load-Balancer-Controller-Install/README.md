@@ -336,6 +336,7 @@ AWS Load Balancer controller installed!
 Kalyans-MacBook-Pro:08-01-Load-Balancer-Controller-Install kdaida$ 
 ```
 ### Step-04-03: Verify that the controller is installed and Webhook Service created
+The ClusterIP Webhook Service serves as an intermediary, routing internal cluster traffic to the appropriate controller pods, enabling efficient communication and management of the AWS Load Balancer Controller within the EKS cluster.
 ```t
 # Verify that the controller is installed.
 kubectl -n kube-system get deployment 
