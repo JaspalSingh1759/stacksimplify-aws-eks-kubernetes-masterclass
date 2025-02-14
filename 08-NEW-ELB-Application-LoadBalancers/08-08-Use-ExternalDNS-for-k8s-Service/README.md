@@ -3,6 +3,27 @@ title: AWS Load Balancer Controller - External DNS & Service
 description: Learn AWS Load Balancer Controller - External DNS & Kubernetes Service
 ---
 
+- Using a Kubernetes Service of type LoadBalancer with ExternalDNS in Amazon EKS has specific use cases, especially when you want to expose services directly to the internet (or externally) and automate DNS record management. Here's a breakdown of its use case and how it works:
+Use Case
+The primary use case for using a Kubernetes Service of type LoadBalancer with ExternalDNS in EKS is direct service exposure with automated DNS management. This setup is useful when:
+Direct Access to Services:
+You want external users or systems to access a specific Kubernetes service directly without routing through an Ingress.
+For example, exposing a database or an application API directly.
+Simplified DNS Management:
+You want DNS records (e.g., in Route 53) to be automatically created and updated for the external IP or hostname of the LoadBalancer service.
+Single Service Exposure:
+When you don’t need complex routing rules (like those provided by Ingress) and only need one service exposed.
+Multi-Cluster or Multi-Service Setup:
+If you have multiple clusters or services that need their own DNS records, ExternalDNS simplifies managing these records.
+How It Works
+Kubernetes Service of Type LoadBalancer:
+When you create a Kubernetes Service of type LoadBalancer, the AWS Load Balancer Controller provisions an AWS Elastic Load Balancer (ELB) for that service.
+The ELB provides an external IP or hostname that can be used to access the service.
+ExternalDNS Integration:
+ExternalDNS watches for LoadBalancer services in your cluster.
+It reads annotations like external-dns.alpha.kubernetes.io/hostname in the service manifest to determine which DNS records to create.
+It then creates or updates DNS records in Route 53, mapping the specified hostname (e.g., api.example.com) to the ELB's external IP or DNS name.
+
 ## Step-01: Introduction
 - We will create a Kubernetes Service of `type: LoadBalancer`
 - We will annotate that Service with external DNS hostname `external-dns.alpha.kubernetes.io/hostname: externaldns-k8s-service-demo101.stacksimplify.com` which will register the DNS in Route53 for that respective load balancer
