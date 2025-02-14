@@ -11,8 +11,14 @@ It watches for changes to Ingress resources and updates DNS records in your DNS 
 When an ALB is created by the AWS Load Balancer Controller, ExternalDNS:
 Reads the hostname specified in the Ingress (e.g., example.com).
 Creates or updates a DNS record in Route 53 to point example.com to the ALB's DNS name.
-When users visit example.com, their request is resolved by Route 53 to the ALB.
+- When users visit example.com, their request is resolved by Route 53 to the ALB.
 The ALB routes the traffic to the appropriate service inside your EKS cluster based on the Ingress rules.
+
+- Simplified Workflow
+You define an Ingress resource with routing rules and a hostname (example.com).
+The AWS Load Balancer Controller creates and configures an ALB for that Ingress.
+ExternalDNS automatically creates or updates a DNS record in Route 53 pointing example.com to the ALB.
+Traffic flows from users → Route 53 → ALB → Kubernetes services.
 
 - We need to create IAM Policy, k8s Service Account & IAM Role and associate them together for external-dns pod to add or remove entries in AWS Route53 Hosted Zones. 
 - Update External-DNS default manifest to support our needs
