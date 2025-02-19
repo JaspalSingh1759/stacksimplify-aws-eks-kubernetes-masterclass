@@ -29,6 +29,20 @@
 
 ### Create User Management Microservice NodePort Service manifest
 - NodePort Service
+- Port Explanation
+nodePort: 31231
+This is the external-facing port that is opened on every node in the cluster. External traffic can reach the service through this port on any node's IP address57. The nodePort range is typically between 30000 and 327675.
+port: 8095
+This is the internal port on which the Kubernetes service is exposed within the cluster68. Other pods or services within the cluster can communicate with this service using this port.
+targetPort: 8095
+This is the actual port on the pod where the application is running and listening for incoming traffic46. In this case, it's the same as the service port, but it could be different if the application inside the container uses a different port.
+Traffic Flow
+The traffic flow for this NodePort service configuration would be:
+External client → Node IP:31231
+NodePort service receives traffic on port 31231
+Service forwards traffic to internal port 8095
+Traffic is then directed to targetPort 8095 on the selected pod(s)
+This setup allows external access to the service while maintaining internal routing flexibility. It's particularly useful for development and testing scenarios, or when you need to expose services externally without using a load balancer35.
 
 ## Step-03: Create UserManagement Service Deployment & Service 
 ```
