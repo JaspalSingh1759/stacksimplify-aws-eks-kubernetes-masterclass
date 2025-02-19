@@ -486,7 +486,52 @@ helm uninstall aws-load-balancer-controller -n kube-system
 - Understand how it overrides the default deprecated annotation `#kubernetes.io/ingress.class: "alb"`
 - [Ingress Class Documentation Reference](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/guide/ingress/ingress_class/)
 - [Different Ingress Controllers available today](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/)
-
+- Ingress Class in Kubernetes is a way to define and manage different types of Ingress controllers within a cluster. It allows you to specify which Ingress controller should handle a given Ingress resource, providing a method to differentiate and route traffic according to specific needs.
+- Why Ingress Classes are Used
+Ingress Classes serve several important purposes:
+Multiple Controller Support: They allow multiple Ingress controllers to coexist in the same cluster, each handling different types of traffic or applications.
+Traffic Segregation: Different classes can be used to separate traffic for various purposes, such as internal vs. external traffic, or for different environments (e.g., production, staging).
+Customization: They enable the use of specialized controllers for specific needs, such as enhanced security or performance optimizations.
+Resource Management: Ingress Classes help in organizing and managing Ingress resources more effectively, especially in large, complex clusters.
+- How Ingress Classes are Used
+Ingress Classes are implemented and used in the following ways:
+Defining an Ingress Class:
+An Ingress Class is defined as a Kubernetes resource. For example:
+```t
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: external-lb
+spec:
+  controller: example.com/ingress-controller
+Specifying Class in Ingress Resources:
+When creating an Ingress resource, you can specify which class it belongs to:
+text
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  ingressClassName: external-lb
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port: 
+              number: 80
+```
+Controller Configuration:
+Ingress controllers are configured to watch for Ingress resources with specific class names. This is typically done through command-line flags or environment variables when deploying the controller.
+Default Classes:
+An Ingress Class can be marked as default using the ingressclass.kubernetes.io/is-default-class annotation. This class will be used for Ingress resources that don't explicitly specify a class.
+Class-Specific Behavior:
+Different Ingress Classes can have different configurations or capabilities, allowing for customized behavior based on the needs of specific applications or environments.
+By using Ingress Classes, Kubernetes administrators can effectively manage complex networking setups, ensuring that different types of ingress traffic are handled appropriately and efficiently within their clusters124.
 
 ## Step-06: Review IngressClass Kubernetes Manifest
 - **File Location:** `08-01-Load-Balancer-Controller-Install/kube-manifests/01-ingressclass-resource.yaml`
