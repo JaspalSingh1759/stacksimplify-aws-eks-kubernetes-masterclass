@@ -504,9 +504,10 @@ metadata:
   name: external-lb
 spec:
   controller: example.com/ingress-controller
+```
 Specifying Class in Ingress Resources:
 When creating an Ingress resource, you can specify which class it belongs to:
-text
+```t
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
